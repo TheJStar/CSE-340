@@ -41,6 +41,9 @@
     .content:nth-child(1) h2{
         font-size: 2rem;
     }
+    .content:nth-child(1)>div {
+        background-image: url("/images/vehicles/delorean.jpg");
+    }
 
     #ownToday {
         font-size: 22px;
