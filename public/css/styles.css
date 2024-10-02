@@ -81,6 +81,11 @@ nav ul li {
   align-content: center;
 }
 
+nav ul li a {
+  text-decoration: none;
+  color: var(--background-color);
+}
+
 .content {
   min-height: fit-content;
   padding: 10px;
@@ -125,7 +130,7 @@ nav ul li {
   width: 90%;
   margin: 0.5rem;
   background-color: var(--accent-color);
-  color: black;
+  color: var(--foreground-color);
 }
 
 .content ul {
@@ -152,6 +157,47 @@ nav ul li {
   border: solid var(--foreground-color) 2px;
   background-color: var(--accent-color);
   align-content: center;
+}
+
+/* cards for cars */
+h1 {
+  height: fit-content;
+}
+
+#inv-display {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  max-width: 800px;
+}
+
+#inv-display li {
+  border-radius: 10px;
+  border: 2px var(--foreground-color) solid;
+  margin: 20px;
+  width: 204px;
+  height: 300px;
+  text-align: center;
+  
+}
+
+#inv-display li::marker {
+  content: "";
+}
+
+#inv-display a {
+  margin: 0 auto;
+}
+
+#inv-display img {
+  border-radius: 10px;
+}
+
+#inv-display hr {
+  border: 2px var(--foreground-color) solid;
 }
 
 footer p {

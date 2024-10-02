@@ -1,0 +1,7 @@
+<% if (title) { %>
+    <h1 style="grid-column: 1 / 3;"><%= title %></h1>
+    <span><%- message %><%- bean %></span>
+<% } else {
+    res.redirect('/')
+} %>
+    
