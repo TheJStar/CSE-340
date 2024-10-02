@@ -5,6 +5,7 @@
 /* ***********************
  * Require Statements
  *************************/
+const baseController = require("./controllers/baseController")
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
@@ -24,9 +25,8 @@ app.set("layout", "./layouts/layout") // not at views root
 app.use(static)
 
 // index route
-app.get("/", function(req, res){
-  res.render("index", {title: "Home"}) // this is where you can add all of the variables as pair values like ...{title: "Home", newVar: "value"}) and then use it in the .ejs files by <%- newVar %> || don't use body as a variable because it will replace the default value of the index.ejs
-})
+app.get("/", baseController.buildHome) 
+
 
 /* ***********************
  * Local Server Information
