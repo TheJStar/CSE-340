@@ -7,12 +7,15 @@
  *************************/
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const carViewRoute = require("./routes/carViewRoute")
+const errorController = require("./controllers/errorController")
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const utilities = require("./utilities/")
+
 
 /* ***********************
  * Veiw Engien and Templates
@@ -30,7 +33,13 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome)) 
 
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", utilities.handleErrors(inventoryRoute))
+
+// Car view route
+app.use('/inv', utilities.handleErrors(carViewRoute))
+
+// Error maker route
+app.use('/inv', utilities.handleErrors(errorController.makeError))
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

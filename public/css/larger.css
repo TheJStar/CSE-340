@@ -21,7 +21,7 @@
     main {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: fit-content 1fr;
+        grid-template-rows: auto 1fr;
     }
 
     #inv-display {
@@ -51,5 +51,10 @@
 
     #ownToday {
         font-size: 22px;
+    }
+
+    .car-view {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 }
