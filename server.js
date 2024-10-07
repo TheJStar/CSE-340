@@ -7,7 +7,6 @@
  *************************/
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
-const carViewRoute = require("./routes/carViewRoute")
 const errorController = require("./controllers/errorController")
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
@@ -34,9 +33,6 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 
 // Inventory routes
 app.use("/inv", utilities.handleErrors(inventoryRoute))
-
-// Car view route
-app.use('/inv', utilities.handleErrors(carViewRoute))
 
 // Error maker route
 app.use('/inv', utilities.handleErrors(errorController.makeError))
