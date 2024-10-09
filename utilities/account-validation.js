@@ -112,7 +112,7 @@ validate.loginRules = () => {
         })
         .withMessage("Incorrect password")
         .custom(async (account_password) => {
-            const credsExists = await accountModel.checkExistingCredentials(accountEmail, account_password)
+            const credsExists = await accountModel.checkExistingCredentials(accountEmail, account_password).rowCount
             if (!credsExists) {
                 throw new Error("The password is incorrect")
             }

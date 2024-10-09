@@ -33,7 +33,7 @@ accountModel.checkExistingCredentials = async function (account_email, account_p
     try {
       const sql = "SELECT * FROM account WHERE account_email = $1 AND account_password = $2"
       const email = await pool.query(sql, [account_email, account_password])
-      return email.rowCount
+      return email
     } catch (error) {
       return error.message
     }
