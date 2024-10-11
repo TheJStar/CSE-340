@@ -73,7 +73,7 @@ accountCont.registerAccount = async function (req, res) {
 }
 
 /* ****************************************
-*  Process Login
+*  Process Login | not in use currently
 * *************************************** */
 accountCont.loginAccount = async function (req, res) {
     let nav = await utilities.getNav()

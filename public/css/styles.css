@@ -249,11 +249,11 @@ form {
 }
 
 label {
-  color: var(--background-color);
+  color: var(--foreground-color);
   font-weight: bold;
 }
 
-input {
+input, textarea, select {
   margin-bottom: 0.8rem;
   border-radius: 0.2rem;
   outline: none;
@@ -292,6 +292,18 @@ input:required:valid  {
 
 form p {
   margin: 0.2rem 0;
+}
+
+textarea {
+  resize: vertical;
+  transition: all 0s linear;
+  width: auto;
+  height: auto;
+  padding-top: 5px;
+}
+
+select {
+  padding: 0;
 }
 
 footer p {

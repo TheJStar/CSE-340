@@ -1,0 +1,25 @@
+<!-- Content Heading -->
+
+<% if (title) { %>
+<h1 style="grid-column: 1 / 3;"><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
+<!-- A Message -->
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+    <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+    <%  }) %>
+    </ul>
+    <% } %>
+
+<!-- Links to add classification or car -->
+<div style="display: flex; flex-direction: column; grid-column: 1 / 3;">
+    <a href="/inv/add-classification">Add New Classification</a>
+    <a href="/inv/add-inventory">Add New Vehicle</a>
+</div>

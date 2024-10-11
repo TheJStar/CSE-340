@@ -40,4 +40,86 @@ async function getCarByInvId(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getCarByInvId}
+/* ***************************
+ *  Adding car classification
+ * ************************** */
+async function addClassification(classification_name) {
+  try {
+    const data = await pool.query(
+      `INSERT INTO public.classification (
+        classification_name
+      )
+      VALUES (
+        $1
+      )`,
+      [classification_name]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("addClassification error " + error)
+  }
+}
+
+/* ***************************
+ *  Adding car to inventory
+ * ************************** */
+async function addCar(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) {
+  try {
+    const data = await pool.query(
+      `INSERT INTO public.inventory (
+        inv_make, 
+        inv_model, 
+        inv_year, 
+        inv_description, 
+        inv_image, 
+        inv_thumbnail, 
+        inv_price, 
+        inv_miles, 
+        inv_color, 
+        classification_id
+      )
+      VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10
+      )`,
+      [
+        inv_make, 
+        inv_model, 
+        inv_year, 
+        inv_description, 
+        inv_image, 
+        inv_thumbnail, 
+        inv_price, 
+        inv_miles, 
+        inv_color, 
+        classification_id
+      ]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("addCar error " + error)
+  }
+}
+
+/* **********************
+ *   Check for existing email
+ * ********************* */
+async function checkExistingClassification(classification_name){
+  try {
+    const sql = "SELECT * FROM classification WHERE classification_name = $1"
+    const classification_name = await pool.query(sql, [classification_name])
+    return classification_name.rowCount
+  } catch (error) {
+    return error.message
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getCarByInvId, addClassification, addCar, checkExistingClassification}
