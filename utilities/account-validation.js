@@ -110,20 +110,20 @@ validate.loginRules = () => {
             minNumbers: 1,
             minSymbols: 1,
         })
-        .withMessage("Incorrect password")
-        .custom(async (account_password) => {
-            const credsExists = await accountModel.checkExistingCredentials(accountEmail, account_password).rowCount
-            if (!credsExists) {
-                throw new Error("The password is incorrect")
-            }
-        }), // the account email doesn't exists
+        .withMessage("Incorrect password"),
+        // .custom(async (account_password) => {
+        //     const credsExists = await accountModel.checkExistingCredentials(accountEmail, account_password).rowCount
+        //     if (!credsExists) {
+        //         throw new Error("The password is incorrect")
+        //     }
+        // }), // the account email doesn't exists
     ]
 }
 
 /* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
-validate.checkLogData = async (req, res, next) => {
+validate.checkLoginData = async (req, res, next) => {
     const { account_email } = req.body
     let errors = []
     errors = validationResult(req)

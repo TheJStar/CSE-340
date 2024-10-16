@@ -28,5 +28,19 @@ router.post(
     invValidate.checkCarData,
     utilities.handleErrors(invController.addInventory)
 )
+// get car data by classification id
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+// route to edit car view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditInventory))
+// route to update
+router.post(
+    "/update/",
+    invValidate.addCarRules(),
+    invValidate.checkUpdateData,
+    utilities.handleErrors(invController.updateInventory))
+// route to delete car view
+router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteInventory))
+// route to delete
+router.post("/delete", utilities.handleErrors(invController.deleteInventory))
 
 module.exports = router;

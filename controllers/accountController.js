@@ -2,6 +2,8 @@ const utilities = require("../utilities")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
 const accountCont = {}
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 accountCont.buildLogin = async function (req, res, next) {
     const nav = await utilities.getNav()
@@ -23,6 +25,18 @@ accountCont.buildRegister = async function(req, res, next) {
       nav,
       errors: null,
     })
+}
+
+/* ****************************************
+*  Deliver Logged in view
+* *************************************** */
+accountCont.buildAccountManagment = async function(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/accountManagment", {
+    title: "Account Managment",
+    nav,
+    errors: null,
+  })
 }
 
 /* ****************************************
@@ -73,35 +87,37 @@ accountCont.registerAccount = async function (req, res) {
 }
 
 /* ****************************************
-*  Process Login | not in use currently
-* *************************************** */
-accountCont.loginAccount = async function (req, res) {
-    let nav = await utilities.getNav()
-    const { account_email, account_password } = req.body
-
-    const logResult = await accountModel.checkExistingCredentials(
-      account_email,
-      account_password
-    )
-  
-    if (logResult) {
-      req.flash(
-        "notice",
-        `Congratulations, you\'re Loged in ${account_firstname}`
-      )
-      res.status(201).render("/", {
-        title: "Home",
-        nav,
-        errors: null,
-      })
-    } else {
-      req.flash("notice", "Sorry, your were unable to log in")
-      res.status(501).render("account/login", {
-        title: "Login",
-        nav,
-        errors: null,
-      })
-    }
-}
+ *  Process login request
+ * ************************************ */
+accountCont.accountLogin = async function (req, res) {
+  let nav = await utilities.getNav()
+  const { account_email, account_password } = req.body
+  const accountData = await accountModel.getAccountByEmail(account_email)
+  console.log(accountData)
+  if (!accountData) {
+   req.flash("notice", "Please check your credentials and try again.")
+   res.status(400).render("account/login", {
+    title: "Login",
+    nav,
+    errors: null,
+    account_email,
+   })
+    return
+  }
+  try {
+   if (await bcrypt.compare(account_password, accountData.account_password)) {
+   delete accountData.account_password
+   const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
+   if(process.env.NODE_ENV === 'development') {
+     res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+     } else {
+       res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+     }
+   return res.redirect("/account/")
+   }
+  } catch (error) {
+   return new Error('Access Forbidden')
+  }
+ }
 
 module.exports = accountCont

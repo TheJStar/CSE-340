@@ -136,6 +136,38 @@ validate.checkCarData = async (req, res, next) => {
 }
 
 /* ***************************
+ *  Check the Vehicle data for updateing
+ * ************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList(classification_id)
+    res.render("inventory/edit-inventory", {
+      errors,
+      title: `Edit ${inv_make} ${inv_model}`,
+      nav,
+      classificationList,
+      inv_id,
+      inv_make, 
+      inv_model, 
+      inv_year, 
+      inv_description, 
+      inv_image, 
+      inv_thumbnail, 
+      inv_price, 
+      inv_miles, 
+      inv_color, 
+      classification_id        
+    })
+    return
+  }
+  next()
+}
+
+/* ***************************
  *  Check the classification data
  * ************************** */
 validate.checkClassificationData = async (req, res, next) => {
