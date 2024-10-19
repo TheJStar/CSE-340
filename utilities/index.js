@@ -1,3 +1,4 @@
+const accountModel = require("../models/account-model")
 const invModel = require("../models/inventory-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -165,9 +166,9 @@ Util.getLoginCheck = async (req, res, next) => {
   if (res.locals.loggedin) {
     // console.log(res.locals.loggedin)
     // console.log(res.locals.accountData)
-    return res.locals.accountData
+    return await accountModel.getAccountById(res.locals.accountData.account_id)
   }
-  return null
+  return 0
 }
 
 module.exports = Util

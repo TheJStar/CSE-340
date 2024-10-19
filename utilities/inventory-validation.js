@@ -113,6 +113,7 @@ validate.checkCarData = async (req, res, next) => {
     errors = validationResult(req)
     if (!errors.isEmpty()) {
       let nav = await utilities.getNav()
+      let accountData = await utilities.getLoginCheck(req, res)
       let classificationList = await utilities.buildClassificationList(classification_id)
       res.render("inventory/add-inventory", {
         errors,
@@ -128,7 +129,8 @@ validate.checkCarData = async (req, res, next) => {
         inv_price, 
         inv_miles, 
         inv_color, 
-        classification_id        
+        classification_id,
+        accountData    
       })
       return
     }
@@ -144,6 +146,7 @@ validate.checkUpdateData = async (req, res, next) => {
   errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
+    let accountData = await utilities.getLoginCheck(req, res)
     let classificationList = await utilities.buildClassificationList(classification_id)
     res.render("inventory/edit-inventory", {
       errors,
@@ -160,7 +163,8 @@ validate.checkUpdateData = async (req, res, next) => {
       inv_price, 
       inv_miles, 
       inv_color, 
-      classification_id        
+      classification_id,
+      accountData    
     })
     return
   }
@@ -176,11 +180,13 @@ validate.checkClassificationData = async (req, res, next) => {
     errors = validationResult(req)
     if (!errors.isEmpty()) {
       let nav = await utilities.getNav()
+      let accountData = await utilities.getLoginCheck(req, res)
       res.render("inventory/add-classification", {
         errors,
         title: "Add Classification",
         nav,
-        classification_name       
+        classification_name,
+        accountData    
       })
       return
     }

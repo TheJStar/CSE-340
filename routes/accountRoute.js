@@ -28,5 +28,19 @@ router.post(
 )
 // Process of logging out
 router.get("/logout", accountController.logoutAccount)
+// updateing accountinfo
+router.get("/update/:account_id", accountController.buildAccountUpdate)
+// update firstname, lastname and email
+router.post(
+  "/update-info", 
+  accountValidate.updateRules(),
+  accountValidate.checkUpdateData,
+  accountController.updateAccountInfo)
+// update password
+router.post(
+  "/update-password", 
+  accountValidate.updatePasswordRules(),
+  accountValidate.checkUpdatePasswordData,
+  accountController.updatePassword)
 
 module.exports = router;

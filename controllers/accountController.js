@@ -99,7 +99,6 @@ accountCont.accountLogin = async function (req, res) {
   let accountData = await utilities.getLoginCheck(req, res)
   const { account_email, account_password } = req.body
   const account_data = await accountModel.getAccountByEmail(account_email)
-  console.log(account_data)
   if (!account_data) {
    req.flash("notice", "Please check your credentials and try again.")
    res.status(400).render("account/login", {
@@ -130,8 +129,112 @@ accountCont.accountLogin = async function (req, res) {
  *  Process Logout request
  * ************************************ */
 accountCont.logoutAccount = (req, res, next) => {
-    res.clearCookie("jwt")
-    return res.redirect("/")
+  res.clearCookie("jwt")
+  return res.redirect("/")
+}
+
+/* ****************************************
+ *  Build update account view
+ * ************************************ */
+accountCont.buildAccountUpdate = async (req, res, next) => {
+  let nav = await utilities.getNav()
+  let accountData = await utilities.getLoginCheck(req, res)
+
+  const account_id = parseInt(req.params.account_id)
+
+  const accountDetails = await accountModel.getAccountById(account_id)
+  res.render("account/update-account", {
+      title: 'Update Account Info', 
+      nav, accountData,
+      errors: null,
+      account_firstname: accountDetails.account_firstname,
+      account_lastname: accountDetails.account_lastname,
+      account_email: accountDetails.account_email,
+      account_id: account_id
+  }) 
+}
+
+/* ****************************************
+ *  Update account info
+ * ************************************ */
+accountCont.updateAccountInfo = async (req, res, next) => {
+  let nav = await utilities.getNav()
+  let accountData = await utilities.getLoginCheck(req, res)
+
+  const {
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email
+  } = req.body
+  const updateResult = await accountModel.updateAccountInfo(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id
+  )
+
+  if (updateResult) {
+    req.flash("notice", "Account updated successfully")
+    res.redirect("/account")
+  } else {
+    req.flash("notice", "Sorry, something went wrong")
+    res.status(501).render("account/update-account", {
+      title: 'Update Account Info', 
+      nav, accountData,
+      errors: null,
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_id
+    })
+  }
+}
+
+/* ****************************************
+ *  Update password
+ * ************************************ */
+accountCont.updatePassword = async (req, res, next) => {
+  let nav = await utilities.getNav()
+  let accountData = await utilities.getLoginCheck(req, res)
+
+  const {
+    account_id,
+    account_password
+  } = req.body
+  
+  // Hash the password before storing
+  let hashedPassword
+  try {
+      // regular password and cost (salt is generated automatically)
+      hashedPassword = await bcrypt.hashSync(account_password, 10)
+  } catch (error) {
+      req.flash("notice", 'Sorry, there was an error processing the registration.')
+      res.status(500).render("account/update-account", {
+      title: "Update Account",
+      nav, accountData,
+      errors: null,
+      account_id
+      })
+  }
+
+  const updateResult = await accountModel.updatePassword(
+    hashedPassword,
+    account_id
+  )
+  
+  if (updateResult) {
+    req.flash("notice", "Account updated successfully")
+    res.redirect("/account")
+  } else {
+    req.flash("notice", "Sorry, something went wrong")
+    res.status(501).render("account/update-account", {
+      title: 'Update Account Info', 
+      nav, accountData,
+      errors: null,
+      account_id
+    })
+  }
 }
 
 module.exports = accountCont
