@@ -25,6 +25,8 @@ router.post(
     accountValidate.loginRules(),
     accountValidate.checkLoginData,
     utilities.handleErrors(accountController.accountLogin)
-  )
+)
+// Process of logging out
+router.get("/logout", accountController.logoutAccount)
 
 module.exports = router;

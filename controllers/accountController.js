@@ -3,6 +3,7 @@ const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
 const accountCont = {}
 const jwt = require("jsonwebtoken")
+const { cookie } = require("express-validator")
 require("dotenv").config()
 
 accountCont.buildLogin = async function (req, res, next) {
@@ -123,6 +124,14 @@ accountCont.accountLogin = async function (req, res) {
   } catch (error) {
    return new Error('Access Forbidden')
   }
- }
+}
+
+/* ****************************************
+ *  Process Logout request
+ * ************************************ */
+accountCont.logoutAccount = (req, res, next) => {
+    res.clearCookie("jwt")
+    return res.redirect("/")
+}
 
 module.exports = accountCont

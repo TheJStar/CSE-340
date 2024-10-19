@@ -65,26 +65,24 @@ app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
 // test route
-// app.use("/test", async (req, res) => {
-//   let nav = await utilities.getNav()
-//   // console.log(req)
-//   // console.log(Object.keys(req.cookies).toString().includes("jwt"))
-//   let bean = false
-//   if (req.cookies.jwt) {
-//     bean = true
-//     console.log(res.locals.loggedin)
-//   }
-//   // if (Object.keys(res.locals).toString().includes("loggedin")) {
-//   //   bean = true
-//   //   console.log(res.locals.loggedin)
-//   // }
-
-//   res.render("index", {
-//       bean: bean,
-//       title: "bread",
-//       nav
-//       })
-//     })
+app.use("/test", 
+  (req, res) => {
+    console.log("contact")
+    console.log(req.cookies)
+    res.clearCookie("jwt")
+    console.log(req.cookies)
+    return res.sendStatus(200)
+  },
+  async (req, res) => {
+    let nav = await utilities.getNav()
+    let account = await utilities.getLoginCheck(req, res)
+    res.render("index", {
+        accountData: account,
+        title: "bread",
+        nav
+        })
+      }  
+)
 
 // Inventory routes
 app.use("/inv", utilities.handleErrors(inventoryRoute))
