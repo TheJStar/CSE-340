@@ -20,3 +20,10 @@
 
       
 <p>You have logged in</p>
+
+<% if (accountData.account_type == "Admin" || accountData.account_type == "Employee") { %>
+    <h3>Inventory</h3>
+    <a href="/inv">Edit inventory</a>
+<% } else { %>
+    
+<% } %>

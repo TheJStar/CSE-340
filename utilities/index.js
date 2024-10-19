@@ -145,4 +145,29 @@ Util.checkLogin = (req, res, next) => {
   }
 }
 
+/* ****************************************
+ *  Check Authority
+ * ************************************ */
+Util.checkAuthority = (req, res, next) => {
+  if (res.locals.accountData.account_type == "Admin" || res.locals.accountData.account_type == "Employee") {
+    next()
+  } else {
+    req.flash("notice", "No Authority Sorry.")
+    return res.redirect("/account/login")
+  }
+}
+
+/* ****************************************
+ *  Checks if logged in for ejs
+ * ************************************ */
+Util.getLoginCheck = async (req, res, next) => {
+  // console.log(req)
+  if (res.locals.loggedin) {
+    // console.log(res.locals.loggedin)
+    // console.log(res.locals.accountData)
+    return res.locals.accountData
+  }
+  return null
+}
+
 module.exports = Util

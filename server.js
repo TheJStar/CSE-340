@@ -62,7 +62,29 @@ app.set("layout", "./layouts/layout") // not at views root
 app.use(static)
 
 // index route
-app.get("/", utilities.handleErrors(baseController.buildHome)) 
+app.get("/", utilities.handleErrors(baseController.buildHome))
+
+// test route
+// app.use("/test", async (req, res) => {
+//   let nav = await utilities.getNav()
+//   // console.log(req)
+//   // console.log(Object.keys(req.cookies).toString().includes("jwt"))
+//   let bean = false
+//   if (req.cookies.jwt) {
+//     bean = true
+//     console.log(res.locals.loggedin)
+//   }
+//   // if (Object.keys(res.locals).toString().includes("loggedin")) {
+//   //   bean = true
+//   //   console.log(res.locals.loggedin)
+//   // }
+
+//   res.render("index", {
+//       bean: bean,
+//       title: "bread",
+//       nav
+//       })
+//     })
 
 // Inventory routes
 app.use("/inv", utilities.handleErrors(inventoryRoute))
@@ -96,7 +118,7 @@ app.use(async (err, req, res, next) => {
     title: err.status || 'Server Error',
     message: message,
     bean: err.bean,
-    nav
+    nav,
   })
 })
 
