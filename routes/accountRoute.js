@@ -27,20 +27,20 @@ router.post(
     utilities.handleErrors(accountController.accountLogin)
 )
 // Process of logging out
-router.get("/logout", accountController.logoutAccount)
+router.get("/logout", utilities.handleErrors(accountController.logoutAccount))
 // updateing accountinfo
-router.get("/update/:account_id", accountController.buildAccountUpdate)
+router.get("/update/:account_id", utilities.handleErrors(accountController.buildAccountUpdate))
 // update firstname, lastname and email
 router.post(
   "/update-info", 
   accountValidate.updateRules(),
   accountValidate.checkUpdateData,
-  accountController.updateAccountInfo)
+  utilities.handleErrors(accountController.updateAccountInfo))
 // update password
 router.post(
   "/update-password", 
   accountValidate.updatePasswordRules(),
   accountValidate.checkUpdatePasswordData,
-  accountController.updatePassword)
+  utilities.handleErrors(accountController.updatePassword))
 
 module.exports = router;

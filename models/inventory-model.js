@@ -41,6 +41,24 @@ async function getCarByInvId(inv_id) {
 }
 
 /* ***************************
+ *  Get car by inv_id
+ * ************************** */
+async function getCarBySubString(sub_string) {
+  try {
+    let sql
+    if (sub_string == null) {
+      sql = `SELECT * FROM public.inventory AS $1;`
+    } else {
+      sql = `SELECT * FROM public.inventory  AS i WHERE UPPER(CONCAT(i.inv_make, ' ', i.inv_model)) LIKE UPPER(CONCAT('%', cast($1 as text), '%'));`
+    }
+    const data = await pool.query(sql, [sub_string])
+    return data.rows
+  } catch (error) {
+    console.error("getCarBySubString error " + error)
+  }
+}
+
+/* ***************************
  *  Adding car classification
  * ************************** */
 async function addClassification(classification_name) {
@@ -174,4 +192,4 @@ async function deleteInventory(inv_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getCarByInvId, addClassification, addCar, checkExistingClassification, updateInventory, deleteInventory}
+module.exports = {getClassifications, getInventoryByClassificationId, getCarByInvId, addClassification, addCar, checkExistingClassification, updateInventory, deleteInventory, getCarBySubString}

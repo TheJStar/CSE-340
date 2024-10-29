@@ -171,6 +171,25 @@ invCont.getInventoryJSON = async (req, res, next) => {
 }
 
 /* ***************************
+ *  Return Inventory by Search String As JSON
+ * ************************** */
+invCont.getInventoryJSONSearchString = async (req, res, next) => {
+  const searchString = req.params.search_string
+  const invData = await invModel.getCarBySubString(searchString)
+  try {
+    if (invData[0].inv_id) {
+      return res.json(invData)
+    } else {
+      next(new Error("No data returned"))
+    }
+  } catch {
+    //  do nothing
+    console.log("No cars with that name")
+    return []
+  }  
+}
+
+/* ***************************
  *  Build car editing form view
  * ************************** */
 invCont.buildEditInventory = async function (req, res, next) {
@@ -319,6 +338,20 @@ invCont.deleteInventory = async function (req, res, next) {
     inv_price,
     })
   }
+}
+
+/* ***************************
+ *  Build Inventory searchbar
+ * ************************** */
+invCont.buildSearch = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  let accountData = await utilities.getLoginCheck(req, res)
+
+  res.render("inventory/search-car", {
+    title: "Search Car by name",
+    nav, accountData,
+    errors: null,
+  })
 }
 
 module.exports = invCont
